@@ -10,7 +10,7 @@ ui <- fluidPage(
                          ".jpg"))),
     mainPanel("main panel for outputs",
 
-    uiOutput(outputId = "my_ui"))
+    imageOutput("image"))
 
   )
 )
@@ -20,9 +20,14 @@ server <- function(input, output, session){
     observeEvent(input$file1, {
         inFile <- input$file1
         if (is.null(inFile)) return()
-        file.copy(inFile$datapath, "/home/jhaseon/projects/geno/geno_R/shiny", recursive = TRUE) 
-            })
-        }
+        file.copy(inFile$datapath, "/home/jhaseon/projects/geno/geno_R/shiny/www", recursive = TRUE)
+    
+        output$image <- renderImage({
+            list(src = "/home/jhaseon/projects/geno/geno_R/shiny/www/0.jpg", alt = "Input")}, deleteFile=FALSE)
+    })
+    }
+
+    
 
 # shinyApp()
 shinyApp(ui = ui, server = server)
